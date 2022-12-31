@@ -1,5 +1,6 @@
 const express = require('express');
 const mysql = require('mysql');
+const session = require('express-session');
 
 const db = mysql.createConnection({
   host: 'localhost',
@@ -16,6 +17,12 @@ db.connect(error => {
 const app = express();
 app.set('view engine', 'pug');
 app.use(express.json());
+
+app.use(session({
+  secret: 'productInventory',
+  resave: true, 
+  saveUninitialized: false
+}));
 
 app.get('/', (req, res) => {
   res.render('index', { message: '/' });
@@ -35,6 +42,23 @@ app.post('/user', (req, res) => {
 });
 
 // login
+app.post('/login', (req, res) => {
+  const { account, password } = req.body;
+  const sql = `SELECT * FROM user WHERE account = '${account}' AND password = '${password}'`;
+  db.query(sql, (error, result) => {
+    if (error) throw error;
+    if (result.length) {
+      req.sessionID.user = account;
+      res.send(`successfully loged in! ${req.session} / ${req.sessionID}`);
+    } else res.send('incorrect account or password');
+  });
+});
+
+// logout
+app.get('/logout', (req, res) => {
+  req.session.destroy();
+  res.send('successfully loged out!');
+});
 
 // create product
 app.post('/product', (req, res) => {
