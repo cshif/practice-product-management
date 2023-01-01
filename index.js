@@ -1,13 +1,9 @@
 const express = require('express');
-const mysql = require('mysql');
+const loginInfo = require('./config/loginInfo');
+const mysql = require('mysql2');
 const session = require('express-session');
 
-const db = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: 'root',
-  database: 'product_inventory'
-});
+const db = mysql.createConnection(loginInfo);
 
 db.connect(error => {
   if (error) throw error;
@@ -15,7 +11,6 @@ db.connect(error => {
 });
 
 const app = express();
-app.set('view engine', 'pug');
 app.use(express.json());
 
 app.use(session({
@@ -25,7 +20,7 @@ app.use(session({
 }));
 
 app.get('/', (req, res) => {
-  res.render('index', { message: '/' });
+  res.send(req.session);
 });
 
 // create user
