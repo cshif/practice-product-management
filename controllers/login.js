@@ -18,8 +18,11 @@ const loginController = {
     });
   },
   logout: (req, res) => {
-    req.session.destroy();
-    res.send('successfully logged out!');
+    const sql = `UPDATE user SET loggedIn = 0, sessionId = null WHERE account = '${req.body.account}'`;
+    db.query(sql, error => {
+      if (error) throw error;
+      res.send('successfully logged out!');
+    });
   }
 };
 
