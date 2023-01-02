@@ -16,14 +16,14 @@ const productController = {
     const sql = 'SELECT * FROM product_list'
     db.query(sql, (error, result) => {
       if (error) throw error;
-      res.send(res.json(result));
+      res.json(result);
     });
   },
   getProduct: (req, res) => {
     const sql = `SELECT * FROM product_list WHERE id = ${req.params.id}`
     db.query(sql, (error, result) => {
       if (error) throw error;
-      res.send(res.json(result));
+      res.json(result);
     });
   },
   update: (req, res) => {
