@@ -1,13 +1,14 @@
+if (process.env.NODE_ENV !== 'production') require('dotenv').config();
+
 const express = require('express');
 const routes = require('./routes');
 const session = require('express-session');
-require('dotenv').config();
 
 const app = express();
 app.use(express.json());
 
 app.use(session({
-  secret: 'productInventory',
+  secret: process.env.SESSION_SECRET,
   resave: true, 
   saveUninitialized: false
 }));
