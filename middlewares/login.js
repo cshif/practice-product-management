@@ -1,18 +1,16 @@
 const db = require('../config/db');
-const fs = require('fs/promises');
+const fs = require('fs');
 
 const loginMiddleware = {
-  saveTokenLocally: async (req, res) => {
-    await fs.writeFile(
+  saveTokenLocally: (req, res) => {
+    fs.writeFile(
       './user.json',
-      JSON.stringify({
-        ...res.locals.loggedInUser,
-        token: req.sessionID
-      }),
+      JSON.stringify(res.locals.loggedInUser,),
       error => {
         if (error) throw error
       }
     );
+    res.send('token saved.')
   },
 };
 

@@ -1,8 +1,19 @@
+const jwt = require('jsonwebtoken');
+
 const authMiddleware = {
   authenticate: (req, res, next) => {
-    if (!req.headers['authorization']) res.status(401).send('Unauthorized');
-    else next();
-  }
+    try {
+      const decoded = jwt.verify(req.headers['authorization'], process.env.TOKEN_SECRET);
+      res.locals.auth = { account: decoded.account };
+      next();
+    } catch (error) {
+      console.error(error);
+      res.status(401).send('Unauthorized');
+    }
+  },
+  generateAccessToken: payload => jwt.sign(payload, process.env.TOKEN_SECRET, {
+    expiresIn: '14 days'
+  })
 };
 
 module.exports = authMiddleware;

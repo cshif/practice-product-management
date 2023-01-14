@@ -7,17 +7,23 @@ const loginController = {
     const sql = `SELECT * FROM user WHERE account = '${account}' AND password = '${password}'`;
     db.query(sql, (error, result) => {
       if (error) throw error;
-      if (result.length) {
-        res.locals.loggedInUser = result[0];
+
+      const loggedInUser = result[0];
+      if (!loggedInUser) {
+        res.send('incorrect account or password');
+      } else if (loggedInUser.account !== res.locals.auth.account) {
+        res.status(401).send('Unauthorized');
+      } else {
+        res.locals.loggedInUser = loggedInUser;
         next();
-      } else res.send('incorrect account or password');
+      }
     });
   },
-  setToken: (req, res) => {
-    const sql = `UPDATE user SET loggedIn = 1, token = '${req.sessionID}' WHERE account = '${req.body.account}' AND password = '${req.body.password}'`;
+  setLoginState: (req, res, next) => {
+    const sql = `UPDATE user SET loggedIn = 1 WHERE account = '${req.body.account}'`;
     db.query(sql, async error => {
       if (error) throw error;
-      res.json({ token: req.sessionID });
+      else next();
     });
   },
   // logout: (req, res) => {
