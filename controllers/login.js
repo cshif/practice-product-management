@@ -20,13 +20,32 @@ const loginController = {
       res.json({ token: req.sessionID });
     });
   },
-  logout: (req, res) => {
-    const sql = `UPDATE user SET loggedIn = 0, sessionId = null WHERE account = '${req.body.account}'`;
-    db.query(sql, error => {
-      if (error) throw error;
-      res.send('successfully logged out!');
-    });
-  }
+  // logout: (req, res) => {
+  //   const sql = `UPDATE user SET loggedIn = 0, token = null WHERE account = '${req.body.account}'`;
+  //   db.query(sql, async error => {
+  //     if (error) throw error;
+  //     res.locals.loggedInUser = {};
+  //     await fs.writeFile(
+  //       './user.json',
+  //       JSON.stringify({}),
+  //       error => {
+  //         if (error) throw error;
+  //       }
+  //     );
+  //     res.send('successfully logged out!');
+  //   });
+  // },
+  // register: (req, res) => {
+  //   const form = {
+  //     account: req.body.account,
+  //     password: req.body.password
+  //   };
+  //   const sql = 'INSERT INTO user SET ?';
+  //   db.query(sql, form, error => {
+  //     if (error) throw error;
+  //     res.send('successfully registered!');
+  //   });
+  // }
 };
 
 module.exports = loginController;

@@ -11,6 +11,8 @@ router.post(
   (req, res) => loginMiddleware.saveTokenLocally(req, res)
 );
 
-router.post('/logout', (req, res) => loginController.logout(req, res));
+// router.post('/logout', (req, res) => loginController.logout(req, res));
+
+// router.post('/register', (req, res) => loginController.register(req, res));
 
 module.exports = router;
