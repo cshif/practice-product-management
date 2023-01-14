@@ -9,7 +9,7 @@ app.use(express.json());
 
 app.use(session({
   secret: process.env.SESSION_SECRET,
-  resave: true, 
+  resave: true,
   saveUninitialized: false
 }));
 

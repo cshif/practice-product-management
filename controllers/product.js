@@ -13,7 +13,7 @@ const productController = {
     });
   },
   getProductList: (req, res) => {
-    const sql = 'SELECT * FROM product_list'
+    const sql = 'SELECT * FROM product_list';
     db.query(sql, (error, result) => {
       if (error) throw error;
       res.json(result);
