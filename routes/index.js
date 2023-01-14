@@ -6,7 +6,8 @@ const userRoutes = require('./user');
 const productRoutes = require('./product');
 
 router.use((req, res, next) => {
-  authMiddleware.authenticate(req, res, next);
+  if (!req.url.includes('login')) authMiddleware.authenticate(req, res, next);
+  else next();
 });
 
 router.use(loginRoutes);

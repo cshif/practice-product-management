@@ -1,4 +1,5 @@
 const db = require('../config/db');
+const authMiddleware = require('../middlewares/auth');
 
 const loginController = {
   login: (req, res, next) => {
@@ -10,8 +11,6 @@ const loginController = {
       const loggedInUser = result[0];
       if (!loggedInUser) {
         res.send('incorrect account or password');
-      } else if (loggedInUser.account !== res.locals.auth.account) {
-        res.status(401).send('Unauthorized');
       } else {
         res.locals.loggedInUser = loggedInUser;
         next();
@@ -19,7 +18,11 @@ const loginController = {
     });
   },
   setLoginState: (req, res, next) => {
-    const sql = `UPDATE user SET loggedIn = 1 WHERE account = '${req.body.account}'`;
+    const token = authMiddleware.generateAccessToken({
+      account: res.locals.loggedInUser.account,
+      userId: res.locals.loggedInUser.id
+    });
+    const sql = `UPDATE user SET loggedIn = 1, token = '${token}' WHERE account = '${req.body.account}'`;
     db.query(sql, async error => {
       if (error) throw error;
       else next();

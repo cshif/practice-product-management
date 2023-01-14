@@ -3,7 +3,7 @@ const db = require('../config/db');
 const logController = {
   logUserOperation: (req, res) => {
     const form = {
-      userId: req.body.userId,
+      userId: res.locals.auth.userId,
       log: JSON.stringify({
         method: req.method,
         url: req.url,
