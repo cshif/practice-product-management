@@ -19,8 +19,6 @@ app.get('/', (req, res) => {
   res.send('yo');
 });
 
-// fetch user log
-
 app.listen(process.env.PORT, () => {
   console.log('Server started!');
 });

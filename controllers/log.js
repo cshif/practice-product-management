@@ -15,7 +15,13 @@ const logController = {
       if (error) throw error;
     });
   },
-  getOperationLogsByUserId: () => {}
+  getOperationLogsByUserId: (req, res) => {
+    const sql = `SELECT user_log.*, user.account FROM user INNER JOIN user_log ON user_log.userId = user.id WHERE id = ${req.params.id}`;
+    db.query(sql, (error, result) => {
+      if (error) throw error;
+      res.json(result);
+    });
+  }
 };
 
 module.exports = logController;
