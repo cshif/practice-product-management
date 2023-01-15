@@ -7,7 +7,12 @@ const logController = {
       log: JSON.stringify({
         method: req.method,
         url: req.url,
-        payload: req.body
+        payload: req.method === 'PUT'
+          ? {
+            original: res.locals.product.original,
+            modified: req.body
+          }
+          : req.body
       })
     };
     const sql = 'INSERT INTO user_log SET ?';
