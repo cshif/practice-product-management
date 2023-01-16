@@ -13,6 +13,7 @@ const loginController = {
         res.send('incorrect account or password');
       } else {
         res.locals.loggedInUser = loggedInUser;
+        res.send({ token: result[0].token });
         next();
       }
     });
