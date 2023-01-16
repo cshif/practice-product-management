@@ -22,24 +22,24 @@ const productController = {
     });
   },
   getProduct: (req, res, next) => {
-    const sql = `SELECT * FROM product_list WHERE id = ${req.params.id}`
-    db.query(sql, (error, result) => {
+    const sql = 'SELECT * FROM product_list WHERE id = ?';
+    db.query(sql, [req.params.id], (error, result) => {
       if (error) throw error;
       res.json(result);
       next();
     });
   },
   update: (req, res, next) => {
-    const sql = `UPDATE product_list SET name = '${req.body.name}', price = '${req.body.price}' WHERE id = ${req.params.id}`;
-    db.query(sql, error => {
+    const sql = 'UPDATE product_list SET name = ?, price = ? WHERE id = ?';
+    db.query(sql, [req.body.name, req.body.price, req.params.id], error => {
       if (error) throw error;
       res.send('product updated!');
       next();
     });
   },
   delete: (req, res, next) => {
-    const sql = `DELETE FROM product_list WHERE id = ${req.params.id}`;
-    db.query(sql, error => {
+    const sql = 'DELETE FROM product_list WHERE id = ?';
+    db.query(sql, [req.params.id], error => {
       if (error) throw error;
       res.send('product deleted!');
       next();

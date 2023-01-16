@@ -21,8 +21,8 @@ const logController = {
     });
   },
   getOperationLogsByUserId: (req, res) => {
-    const sql = `SELECT user_log.*, user.account FROM user INNER JOIN user_log ON user_log.userId = user.id WHERE id = ${req.params.id}`;
-    db.query(sql, (error, result) => {
+    const sql = 'SELECT user_log.*, user.account FROM user INNER JOIN user_log ON user_log.userId = ? WHERE id = ?';
+    db.query(sql, [user.id, req.params.id], (error, result) => {
       if (error) throw error;
       res.json(result);
     });
