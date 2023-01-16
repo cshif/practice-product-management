@@ -13,8 +13,21 @@ const userController = {
     };
     const sql = 'INSERT INTO user SET ?';
     db.query(sql, form, error => {
-      if (error) throw error;
+      if (error) {
+        console.error(error);
+        res.status(500).send('Server error.');
+      }
       res.send('user created!');
+    });
+  },
+  getUserList: (req, res) => {
+    const sql = 'SELECT * FROM user';
+    db.query(sql, (error, result) => {
+      if (error) {
+        console.error(error);
+        res.status(500).send('Server error.');
+      }
+      res.json(result);
     });
   }
 };

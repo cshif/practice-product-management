@@ -7,7 +7,10 @@ const loginMiddleware = {
       './user.json',
       JSON.stringify(res.locals.loggedInUser,),
       error => {
-        if (error) throw error
+        if (error) {
+          console.error(error);
+          res.status(500).send('Server error.');
+        }
       }
     );
     res.send('token saved.')

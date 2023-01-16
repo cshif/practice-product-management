@@ -6,7 +6,10 @@ const loginController = {
     const { account, password } = req.body;
     const sql = 'SELECT * FROM user WHERE account = ? AND password = ?';
     db.query(sql, [account, password], (error, result) => {
-      if (error) throw error;
+      if (error) {
+        console.error(error);
+        res.status(500).send('Server error.');
+      }
 
       const loggedInUser = result[0];
       if (!loggedInUser) {
@@ -25,7 +28,10 @@ const loginController = {
     });
     const sql = 'UPDATE user SET loggedIn = 1, token = ? WHERE account = ?';
     db.query(sql, [token, req.body.account], async error => {
-      if (error) throw error;
+      if (error) {
+        console.error(error);
+        res.status(500).send('Server error.');
+      }
       else next();
     });
   }

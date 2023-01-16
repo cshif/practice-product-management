@@ -17,13 +17,19 @@ const logController = {
     };
     const sql = 'INSERT INTO user_log SET ?';
     db.query(sql, form, error => {
-      if (error) throw error;
+      if (error) {
+        console.error(error);
+        res.status(500).send('Server error.');
+      }
     });
   },
   getOperationLogsByUserId: (req, res) => {
     const sql = 'SELECT user_log.*, user.account FROM user INNER JOIN user_log ON user_log.userId = ? WHERE id = ?';
     db.query(sql, [user.id, req.params.id], (error, result) => {
-      if (error) throw error;
+      if (error) {
+        console.error(error);
+        res.status(500).send('Server error.');
+      }
       res.json(result);
     });
   }
