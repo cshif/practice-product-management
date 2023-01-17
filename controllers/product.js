@@ -7,16 +7,17 @@ const productController = {
       price: req.body.price
     };
     const sql = 'INSERT INTO product_list SET ?';
-    db.query(sql, form, error => {
+    db.query(sql, form, (error, result) => {
       if (error) {
         console.error(error);
         res.status(500).send('Server error.');
       }
+      res.locals.product = { productId: result.insertId };
       res.send('product created!');
       next();
     });
   },
-  getProductList: (req, res, next) => {
+  getProductList: (req, res) => {
     const sql = 'SELECT * FROM product_list';
     db.query(sql, (error, result) => {
       if (error) {
@@ -24,10 +25,9 @@ const productController = {
         res.status(500).send('Server error.');
       }
       res.json(result);
-      next();
     });
   },
-  getProduct: (req, res, next) => {
+  getProduct: (req, res) => {
     const sql = 'SELECT * FROM product_list WHERE id = ?';
     db.query(sql, [req.params.id], (error, result) => {
       if (error) {
@@ -35,7 +35,6 @@ const productController = {
         res.status(500).send('Server error.');
       }
       res.json(result);
-      next();
     });
   },
   update: (req, res, next) => {
@@ -45,6 +44,10 @@ const productController = {
         console.error(error);
         res.status(500).send('Server error.');
       }
+      res.locals.product = {
+        ...res.locals.product,
+        productId: req.params.id
+      };
       res.send('product updated!');
       next();
     });
@@ -56,6 +59,7 @@ const productController = {
         console.error(error);
         res.status(500).send('Server error.');
       }
+      res.locals.product = { productId: req.params.id };
       res.send('product deleted!');
       next();
     });

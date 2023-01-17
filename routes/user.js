@@ -5,6 +5,6 @@ const logController = require('../controllers/log');
 
 router.post('/user', (req, res) => userController.create(req, res));
 
-router.get('/log/:id', (req, res) => logController.getOperationLogsByUserId(req, res));
+router.get('/log/:id', (req, res) => logController.getOperationLogsByProductId(req, res));
 
 module.exports = router;

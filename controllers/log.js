@@ -3,16 +3,17 @@ const db = require('../config/db');
 const logController = {
   logUserOperation: (req, res) => {
     const form = {
-      userId: res.locals.auth.userId,
+      productId: res.locals.product.productId,
       log: JSON.stringify({
         method: req.method,
         url: req.url,
+        operator: res.locals.auth,
         payload: req.method === 'PUT'
           ? {
             original: res.locals.product.original,
             modified: req.body
           }
-          : req.body
+          : res.locals.product.original
       })
     };
     const sql = 'INSERT INTO user_log SET ?';
@@ -23,8 +24,8 @@ const logController = {
       }
     });
   },
-  getOperationLogsByUserId: (req, res) => {
-    const sql = 'SELECT user_log.*, user.account FROM user INNER JOIN user_log ON user_log.userId = user.id WHERE id = ?';
+  getOperationLogsByProductId: (req, res) => {
+    const sql = 'SELECT user_log.* FROM product_list INNER JOIN user_log ON user_log.productId = product_list.id WHERE id = ?';
     db.query(sql, [req.params.id], (error, result) => {
       if (error) {
         console.error(error);
