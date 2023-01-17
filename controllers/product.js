@@ -50,7 +50,7 @@ const productController = {
     });
   },
   delete: (req, res, next) => {
-    const sql = 'DELETE FROM product_list WHERE id = ?';
+    const sql = 'UPDATE product_list SET deleted = true WHERE id = ?';
     db.query(sql, [req.params.id], error => {
       if (error) {
         console.error(error);
