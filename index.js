@@ -15,7 +15,7 @@ app.use(session({
   saveUninitialized: false
 }));
 
-app.use('/', routes);
+app.use('/api', routes);
 
 app.get('/', (req, res) => {
   res.send('yo');
